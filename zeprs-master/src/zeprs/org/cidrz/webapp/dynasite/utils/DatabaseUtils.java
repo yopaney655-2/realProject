@@ -969,9 +969,10 @@ public class DatabaseUtils {
 
         int result = 0;
         try {
-            Statement s = conn.createStatement();
+            PreparedStatement s = conn.prepareStatement("LOAD DATA INFILE '" + "?" + "'");
+            s.setString(1, batchFileName);
             String sql = "LOAD DATA INFILE '" + batchFileName + "'";
-            result = s.executeUpdate(sql);
+            result = s.executeUpdate();
             s.close();
         } catch (Exception ex) {
             log.info("Batchfile name: " + batchFileName);
