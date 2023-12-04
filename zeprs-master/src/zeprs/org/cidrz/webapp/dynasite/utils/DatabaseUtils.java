@@ -35,6 +35,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.io.FileInputStream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -205,7 +209,15 @@ public class DatabaseUtils {
             ds.setServerName("localhost");
             ds.setDatabaseName("zeprs");
             ds.setUser("zeprs_web_user");
-            ds.setPassword("**pasword**");
+            String password = "";
+            try (InputStream inputStream = new FileInputStream("application.properties")) {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                password = properties.getProperty("password");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ds.setPassword(password);
             dataSource = ds;
 
         } catch (Exception ex) {
