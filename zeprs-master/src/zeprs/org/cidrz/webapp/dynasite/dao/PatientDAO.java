@@ -38,7 +38,7 @@ import org.cidrz.webapp.dynasite.valueobject.Patient;
 /**
  * Provide objects about forms
  *
- * @author <a href="mailto:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="65060e000909001c2517110c4b0a1702">[emailÂ protected]</a>">Chris Kelley</a>
+ * @author <a href="mailto:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="65060e000909001c2517110c4b0a1702">[email protected]</a>">Chris Kelley</a>
  *         Date: Jun 23, 2005
  *         Time: 7:09:58 PM
  */
@@ -409,15 +409,17 @@ public class PatientDAO {
 
     public static String delete(Connection conn, Long patientId) throws Exception {
         String result = null;
-        Statement stmt;
+        PreparedStatement stmt;
+        String query = "DELETE patient, patient_status FROM patient, patient_status " +
+                        "WHERE patient.id = patient_status.id " +
+                        "AND patient.id=" + "?";
         conn.setAutoCommit(false);
-        stmt = conn.createStatement();
+        stmt = conn.prepareStatement(query);
+        stmt.setLong(1, patientId);
         stmt.execute("START TRANSACTION;");
         stmt.execute("SET FOREIGN_KEY_CHECKS = 0;");
-        String sql = "DELETE patient, patient_status FROM patient, patient_status " +
-                "WHERE patient.id = patient_status.id " +
-                "AND patient.id=" + patientId;
-        stmt.execute(sql);
+        
+        stmt.execute();
         stmt.execute("Commit");
         result = "Patient record deleted.";
         try {
