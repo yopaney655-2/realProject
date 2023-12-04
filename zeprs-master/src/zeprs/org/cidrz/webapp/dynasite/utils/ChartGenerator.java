@@ -13,6 +13,10 @@ package org.cidrz.webapp.dynasite.utils;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.io.FileInputStream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -35,7 +39,15 @@ public class ChartGenerator {
 
         StringBuffer schema = null;
         DatabaseMetaData metadata = null;
-        Connection currentConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zeprs", "root", "");
+        String password = "";
+        try (InputStream inputStream = new FileInputStream("application.properties")) {
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            password = properties.getProperty("password");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Connection currentConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zeprs", "root", password);
 
         String formSQL = "select form.name as form_name, concat(\"field\", form_field.id) as field_name from form, form_field where form.id=form_field.form_id order by form_name, form_field.id";
         PreparedStatement forms = currentConnection.prepareStatement(formSQL);
