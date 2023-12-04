@@ -27,9 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.sql.PreparedStatement;
 
 /**
- * @author <a href="mailto:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="36555d535a5a534f7644425f18594451">[emailÂ protected]</a>">Chris Kelley</a>
+ * @author <a href="mailto:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="36555d535a5a534f7644425f18594451">[email protected]</a>">Chris Kelley</a>
  *         Date: Jul 4, 2005
  *         Time: 9:22:16 AM
  */
@@ -254,14 +255,16 @@ public class PregnancyDAO {
      */
     public static String delete(Connection conn, Long patientId) throws Exception {
         String result = null;
-        Statement stmt;
+        PreparedStatement stmt;
+        String query = "DELETE pregnancy FROM pregnancy " +
+                        "WHERE pregnancy.patient_id=" + "?";
         conn.setAutoCommit(false);
-        stmt = conn.createStatement();
+        stmt = conn.prepareStatement(query);
+        stmt.setLong(1, patientId);
         stmt.execute("START TRANSACTION;");
         stmt.execute("SET FOREIGN_KEY_CHECKS = 0;");
-        String sql = "DELETE pregnancy FROM pregnancy " +
-                "WHERE pregnancy.patient_id=" + patientId;
-        stmt.execute(sql);
+        
+        stmt.execute();
         stmt.execute("Commit");
         result = "Pregnancy records deleted.";
         try {
