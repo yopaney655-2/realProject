@@ -27,6 +27,7 @@ import org.cidrz.webapp.dynasite.valueobject.Patient;
 import org.cidrz.webapp.dynasite.valueobject.Pregnancy;
 import org.cidrz.webapp.dynasite.valueobject.Problem;
 import org.cidrz.webapp.dynasite.valueobject.Site;
+import java.sql.PreparedStatement;
 
 /**
  * Created by IntelliJ IDEA.
@@ -359,14 +360,16 @@ public class ProblemDAO {
      */
     public static String deleteOne(Connection conn, String uuid) {
     	String result = "Problem deleted.";
-    	Statement stmt;
+    	PreparedStatement stmt;
     	try {
+String query = "delete from problem where uuid=" + "?";
     		conn.setAutoCommit(false);
-    		stmt = conn.createStatement();
+    		stmt = conn.prepareStatement(query);
+            stmt.setString(1, uuid);
     		stmt.execute("START TRANSACTION;");
     		stmt.execute("SET FOREIGN_KEY_CHECKS = 0;");
-    		String sql = "delete from problem where uuid=" + uuid;
-    		stmt.execute(sql);
+    		
+    		stmt.execute();
     		stmt.execute("Commit");
     	} catch (Exception e) {
     		result = "Error while deleting Problem.";
