@@ -34,6 +34,7 @@ import org.cidrz.webapp.dynasite.utils.DatabaseUtils;
 import org.cidrz.webapp.dynasite.utils.ZEPRSRowProcessor;
 import org.cidrz.webapp.dynasite.valueobject.DynaSiteObjects;
 import org.cidrz.webapp.dynasite.valueobject.RuleDefinition;
+import java.sql.PreparedStatement;
 
 /**
  * Created by IntelliJ IDEA.
@@ -662,14 +663,16 @@ public class OutcomeDAO {
      */
     public static String deleteAll(Connection conn, Long patientId) {
         String result = "Outcomes deleted.";
-        Statement stmt;
+        PreparedStatement stmt;
         try {
+            String query = "delete from outcome where patient_id=" + "?";
             conn.setAutoCommit(false);
-            stmt = conn.createStatement();
+            stmt = conn.prepareStatement(query);
+            stmt.setLong(1, patientId);
             stmt.execute("START TRANSACTION;");
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0;");
-            String sql = "delete from outcome where patient_id=" + patientId;
-            stmt.execute(sql);
+            
+            stmt.execute();
             stmt.execute("Commit");
         } catch (Exception e) {
             result = "Error while deleting Outcomes.";
