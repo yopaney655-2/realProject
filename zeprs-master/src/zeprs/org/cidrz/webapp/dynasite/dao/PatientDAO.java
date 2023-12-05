@@ -38,7 +38,7 @@ import org.cidrz.webapp.dynasite.valueobject.Patient;
 /**
  * Provide objects about forms
  *
- * @author <a href="mailto:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="65060e000909001c2517110c4b0a1702">[emailÂ protected]</a>">Chris Kelley</a>
+ * @author <a href="mailto:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="65060e000909001c2517110c4b0a1702">[email protected]</a>">Chris Kelley</a>
  *         Date: Jun 23, 2005
  *         Time: 7:09:58 PM
  */
