@@ -124,8 +124,9 @@ public class ChartGenerator {
 
     private void dropTable(Connection con, String currentTable) {
         try {
-            Statement s = con.createStatement();
-            s.execute("drop table " + currentTable);
+            PreparedStatement s = con.prepareStatement("drop table " + "?");
+            s.setString(1, currentTable);
+            s.execute();
         } catch (SQLException e) {
             System.out.println("failed to drop table " + currentTable + ". Ex: " + e.getMessage());
         }
