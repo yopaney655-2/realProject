@@ -1101,8 +1101,9 @@ public class ZEPRSSharedItems {
             String sql = "SELECT * FROM encounter, deliverysum\n" +
                     "WHERE encounter.id = deliverysum.id\n" +
                     "AND form_id = ? AND date_visit >= ? AND date_visit <= ? AND site_id = ?\n" +
-                    "ORDER BY " + orderBy;
+                    "ORDER BY " + "?";
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, orderBy);
             ps.setString(1, Integer.toString(formID));
             ps.setDate(2, beginDate);
             ps.setDate(3, endDate);
