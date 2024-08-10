@@ -404,8 +404,8 @@ public class ZEPRSUtils {
         try {
 
             // Retrieve all Encounter records for this form
-            String sql = "SELECT * FROM patient, encounter," + table + " " +
-                    "WHERE encounter.id = " + table + ".id " +
+            String sql = "SELECT * FROM patient, encounter," + "?" + " " +
+                    "WHERE encounter.id = " + "?" + ".id " +
                     "AND encounter.patient_id = patient.id " +
                     "AND patient.parent_id IS NULL " +
                     "AND form_id = ? AND date_visit >= ? AND date_visit <= ? ";
@@ -414,6 +414,8 @@ public class ZEPRSUtils {
             }
                 sql = sql + " ORDER BY date_visit";
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, table);
+            ps.setString(2, table);
             ps.setString(1, Integer.toString(formID));
             ps.setDate(2, beginDate);
             ps.setDate(3, endDate);
@@ -1767,7 +1769,7 @@ public class ZEPRSUtils {
 
     /**
      * Return list of patients where cd4 count <= 350 or is null
-     * 9/9/09: Changed from 250 to 350 upon request from CIDRZ (<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="84d0e5eaedfde5aad0e1e9e6ebc4e7ede0f6feaaebf6e3">[emailÂ protected]</a>)
+     * 9/9/09: Changed from 250 to 350 upon request from CIDRZ (<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="84d0e5eaedfde5aad0e1e9e6ebc4e7ede0f6feaaebf6e3">[email protected]</a>)
      * @param conn
      * @param siteId
      * @param beginDate
